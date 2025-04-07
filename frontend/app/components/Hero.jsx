@@ -9,6 +9,7 @@ export default function HeroSection() {
           <h1 className="text-4xl font-bold text-blue-950 mb-4">
             Welcome to CHAS BANKS
           </h1>
+          <p>hej</p>
           <p className="text-lg text-gray-700 mb-6">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eum
             sapiente labore at quasi omnis ex?
