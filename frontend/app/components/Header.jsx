@@ -14,8 +14,14 @@ export default function Header() {
   }
 
   return (
-    <nav className=" flex justify-between items-center w-full ">
-      {isOpen && <div className="fixed inset-0 " onClick={handleMenu}></div>}
+    <nav className="flex justify-between items-center w-full">
+      {isOpen && (
+        <div
+          data-testid="menu-overlay"
+          className="fixed inset-0"
+          onClick={handleMenu}
+        ></div>
+      )}
 
       <div className="flex flex-row justify-between items-center w-full bg-blue-950 text-white py-4 px-5 gap-10">
         <Link
@@ -24,7 +30,6 @@ export default function Header() {
           style={{textDecoration: "none"}}
         >
           <span className="text-5xl hover:no-underline">🏦</span>
-
           <span className="text-2xl hover:no-underline">CHAS BANKS!</span>
         </Link>
 
@@ -51,28 +56,31 @@ export default function Header() {
             </Link>
           </li>
         </ul>
+
         {/* Menu Btn */}
         {!isOpen && (
           <button
             className="text-3xl relative z-50 md:hidden"
             onClick={handleMenu}
+            aria-label="menu"
           >
             <RxHamburgerMenu />
           </button>
         )}
       </div>
+
       {/* Slide Menu */}
       <div
         className={`fixed top-0 right-0 min-h-screen w-52 bg-blue-950 text-white shadow-lg p-4 flex flex-col items-center space-y-7 text-xl duration-300 ease-in-out 
-          ${isOpen ? "translate-x-0" : " translate-x-full"}`}
+          ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="flex justify-end text-3xl w-full">
-          <button onClick={handleMenu}>
+          <button onClick={handleMenu} aria-label="close">
             <TfiClose />
           </button>
         </div>
 
-        <ul className=" flex flex-col gap-5">
+        <ul className="flex flex-col gap-5">
           <li>
             <Link href="/">Contact Us</Link>
           </li>
@@ -82,13 +90,13 @@ export default function Header() {
           <li>
             <Link href="/">Transfer</Link>
           </li>
-          <li className="border-b pb-10 ">
+          <li className="border-b pb-10">
             <Link href="/">Help</Link>
           </li>
           <li>
             <Link
               href="/login"
-              className="flex flex-row justify-start items-center gap-3  py-2 px-4 rounded-sm bg-blue-500 hover:opacity-90"
+              className="flex flex-row justify-start items-center gap-3 py-2 px-4 rounded-sm bg-blue-500 hover:opacity-90"
               style={{textDecoration: "none"}}
             >
               <BiLogIn />
@@ -99,11 +107,4 @@ export default function Header() {
       </div>
     </nav>
   );
-}
-
-{
-  /*Stänger menyn vid klick utanför) */
-}
-{
-  /* {isOpen && <div className="fixed inset-0 " onClick={handleMenu}></div>} */
 }
