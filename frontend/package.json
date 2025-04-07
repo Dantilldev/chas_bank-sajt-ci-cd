@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watchAll=false --passWithNoTests",
-    "test:ci": "jest --ci --runInBand --maxWorkers=2"
+    "test:ci": "jest --ci --runInBand"
   },
   "dependencies": {
     "next": "15.2.3",
