@@ -1,0 +1,98 @@
+Ci/CD - Continuous Integration / Continuous Delivery/Deployment
+
+CI -Målet är att ha kod som alltid funkar 
+CD - Är redo att publiceras/Deploya
+
+CI - pusha bara kod som funkar - testa på din egen dator
+Använd kod-tester för att försäkra sig om att allt funkar
+Feature flags- Ett sätt att stänga av delar av koden
+	Ex. : Jag bygger konto-sidan på min banksajt.
+	
+import { AccountPage } from './AccountPage'
+const ACCOUNT_PAGE = true/false
+function Home(){
+<nav>    
+    <HomePage />
+    <AboutPage />
+    {ACCOUNT_PAGE && <AccountPage />}
+    <ContactPage />
+</nav>
+}
+
+CD - ontinuous Delivery/Deployment
+
+1. Alltid kunna publicera sin kod- använd tex Feature flags
+2. Enkelt att kunna publicera sin kod genom att pusha till GitHub(Går att göra med Github Actions):
+    - Pusha kod
+    - Github läser din github-actions fil
+    - Filen beskriver vad den ska göra
+    - Den ska då publicera koden i repot till ec2
+    - Den kan även starta om program på din server
+    - mappen/fil brukar heta .github/workflows/deploy.yml
+    hur funkar det när man puschar till github? 
+    - Github läser din github-actions fil
+    - Filen beskriver vad den ska göra
+    - deploy.yml filen script körs i tex ubuntu containern. 
+    - Skickar koden till ec2/startar om programmet på servern 
+    För AWS ec2:
+    - Skicka filer med rsync
+    - Starta om programmet med:
+     sudo docker-compose up --build -d
+
+CI/CD Pipeline 
+
+- Ändra host till mysql ist för local => pool => server.js
+- Skapa mepp: .github i den mappen: workflows: iden en fil deploy.yml.
+
+I deploy.yml:
+
+// Namn på filen
+name: Deploy to EC2
+
+// När ska den köras 
+on:
+  push:
+    branches:
+      - main
+      
+// Jobb som ska köra
+jobs:
+    deployment:
+        name: Deploy
+        runs-on: ubuntu-latest
+
+        steps:
+         - name: Check out Repo 
+              uses: actions/checkout@v4
+        
+         // checkup user in github: appelboy
+         -name: Copy files to EC2
+                uses: appleboy/scp-action@master
+                with:
+                    host: ${{ secrets.HOST }} // IP adressen till ec2
+                    username: ${{ secrets.USERNAME }} //  Användarnamn till ec2
+                    key: ${{ secrets.SSH_KEY }} // Nyckeln till ec2
+                    port: 22 // Skickar filer till port 22
+                    source: "." // Skickar alla filer i mappen
+                    target: "/home/ubuntu/app" // Mappen på ec2
+                   
+
+
+         -name: Run Docker on EC2
+                uses: appleboy/ssh-action@master
+                with:
+                    host: ${{ secrets.HOST }} 
+                    username: ${{ secrets.USERNAME }} 
+                    key: ${{ secrets.SSH_KEY }} 
+                    port: 22 
+                    script: |
+                        cd /home/ubuntu/app (där projekte ligger)
+                        sudo docker-compose down
+                        sudo docker-compose up --build -d
+
+
+1. puscharusha till github
+2. Logga in på ec2 i teminalen
+3. Settings -> secrets variables -> Actions -> Add new secret -> HOST(public DNS från AWS) -> add -> USERNAME(ubuntu) -> add -> SSH_KEY (AWS NYCKELN) öppna AWS.pem med teminalen, cat AWS.pem, skicka det privata nyckelm med begin/end.
+
+kolla på github actions -> deploy -> checka om det funkar
