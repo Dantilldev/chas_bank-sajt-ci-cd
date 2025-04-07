@@ -25,7 +25,7 @@ export default function Header() {
         >
           <span className="text-5xl hover:no-underline">🏦</span>
 
-          <span className="text-2xl hover:no-underline">CHAS BANKS</span>
+          <span className="text-2xl hover:no-underline">CHAS BANKS!</span>
         </Link>
 
         <ul className="md:flex items-center hidden space-x-6 text-lg font-light">

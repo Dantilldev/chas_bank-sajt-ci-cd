@@ -12,7 +12,7 @@ app.use(express.json()); // Använd Express inbyggda json-parser
 const pool = mysql.createPool({
   user: "root",
   password: "root",
-  host: "localhost",
+  host: "msysql",
   database: "bank",
   port: 3307,
 });
